@@ -12,10 +12,10 @@ const int HEIGHT = 21;
 
 enum Direction { UP, DOWN, LEFT, RIGHT };
 
-struct Cell {
+struct Cell {                                   // each cell in maze
     int x, y;
     bool visited;
-    bool walls[4]; // UP, DOWN, LEFT, RIGHT
+    bool walls[4]; // UP, DOWN, LEFT, RIGHT     // array of walls (present/not present)
 };
 
 class Maze {
@@ -26,8 +26,8 @@ public:
 
 private:
     int width, height;
-    std::vector<std::vector<Cell>> grid;
-    std::stack<Cell*> cellStack;
+    std::vector<std::vector<Cell>> grid;        // 2D vector representing maze grid
+    std::stack<Cell*> cellStack;                // stack used for backtracking during maze generation
     Cell* currentCell;
     int totalCells;
     int visitedCells;
@@ -46,11 +46,11 @@ void Maze::initGrid() {
     grid.resize(height, std::vector<Cell>(width));
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
-            grid[y][x] = { x, y, false, { true, true, true, true } };
+            grid[y][x] = { x, y, false, { true, true, true, true } };   // set all walls to true and mark as unvisited
         }
     }
     currentCell = &grid[0][0];
-    currentCell->visited = true;
+    currentCell->visited = true;                                        
     totalCells = width * height;
     visitedCells = 1;
 }
@@ -95,7 +95,7 @@ void Maze::removeWall(Cell* current, Cell* next) {
 }
 
 void Maze::generate() {
-    std::srand(std::time(nullptr));
+    std::srand(std::time(nullptr));                     // generates random maze
     while (visitedCells < totalCells) {
         Cell* nextCell = getNeighbor(currentCell);
         if (nextCell) {
